@@ -27,7 +27,7 @@ function App() {
 
 	//If user wants to use default values
 	const [isDefault, setIsDefault] = useState(true);
-	const defaultMilestones = [{ value: 500 }, { value: 1200 }, { value: 2100 }];
+	const defaultMilestones = [{ value: 500 }, { value: 1000 }, { value: 1250 }];
 	const handleDefaultMilestones = () => {
 		setIsDefault(!isDefault);
 		if (isDefault) {

@@ -71,9 +71,7 @@ function ProgressBar({ milestones }) {
 			}
 
 			if (currentProgress <= milestone.value) {
-				const range = nextMilestone
-					? nextMilestone.value - milestone.value
-					: milestone.value - prevMilestone;
+				const range = milestone.value - prevMilestone;
 
 				const position = nextMilestone
 					? ((currentProgress - milestone.value) / range) *
@@ -85,6 +83,7 @@ function ProgressBar({ milestones }) {
 
 				setProgress(position);
 				console.log(position);
+
 				break;
 			}
 			prevMilestone = milestone.value;
