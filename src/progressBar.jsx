@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import { CheckIcon } from "@chakra-ui/icons";
 import {
 	Box,
-	Progress,
-	Text,
-	Icon,
 	Divider,
 	Flex,
+	Icon,
 	Input,
+	Progress,
 	Slider,
-	SliderTrack,
 	SliderFilledTrack,
 	SliderThumb,
+	SliderTrack,
+	Text,
 } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
 import { MdCatchingPokemon } from "react-icons/md";
 
 function ProgressBar({ milestones }) {
@@ -21,6 +21,9 @@ function ProgressBar({ milestones }) {
 
 	useEffect(() => {
 		calculateProgress();
+		milestones.forEach((milestone, i) => {
+			milestone.position = ((i + 1) / (milestones.length + 1)) * 100;
+		});
 		if (milestones.length == 0) {
 			setCurrentProgress(0);
 			setProgress(0);
@@ -50,22 +53,38 @@ function ProgressBar({ milestones }) {
 	const calculateProgress = () => {
 		let prevMilestone = 0;
 		const numMilestones = milestones.length;
+
 		for (let i = 0; i < numMilestones; i++) {
 			const milestone = milestones[i];
-			const position = ((i + 1) / (numMilestones + 1)) * 100; // Calculate position dynamically
-			milestone.position = position; // Set the position for the milestone
-			const lastMilestone = milestones[milestones.length - 1].value;
-			if (currentProgress > lastMilestone) {
-				let percentage = 100;
-				setProgress(percentage);
+			const nextMilestone = i < numMilestones - 1 ? milestones[i + 1] : null;
+
+			if (currentProgress === "" || currentProgress === undefined) {
+				setProgress(0);
+				return;
 			}
+
+			const lastMilestone = milestones[milestones.length - 1].value;
+
+			if (currentProgress > lastMilestone) {
+				setProgress(100);
+				return;
+			}
+
 			if (currentProgress <= milestone.value) {
-				const range = milestone.value - prevMilestone;
-				const progressInRange = currentProgress - prevMilestone;
-				const percentage =
-					position -
-					((range - progressInRange) / range) * (100 / numMilestones);
-				setProgress(percentage);
+				const range = nextMilestone
+					? nextMilestone.value - milestone.value
+					: milestone.value - prevMilestone;
+
+				const position = nextMilestone
+					? ((currentProgress - milestone.value) / range) *
+							(nextMilestone.position - milestone.position) +
+					  milestone.position
+					: ((currentProgress - milestone.value) / range) *
+							(100 - milestone.position) +
+					  milestone.position;
+
+				setProgress(position);
+				console.log(position);
 				break;
 			}
 			prevMilestone = milestone.value;

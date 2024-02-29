@@ -1,20 +1,19 @@
-import { useEffect, useRef, useState } from "react";
 import {
-	ChakraProvider,
-	Input,
-	Flex,
 	Button,
-	Stack,
-	HStack,
+	ChakraProvider,
 	Container,
+	HStack,
+	Input,
+	Stack,
 } from "@chakra-ui/react";
-import ProgressBar from "./progressBar";
+import { useState } from "react";
 import "./App.css";
+import ProgressBar from "./progressBar";
 
 function App() {
 	const [milestones, setMilestones] = useState([]);
 	const [newMilestoneValue, setNewMilestoneValue] = useState("");
-	
+
 	const handleAddMilestone = () => {
 		if (newMilestoneValue != "") {
 			const newMilestone = {
@@ -27,23 +26,16 @@ function App() {
 	};
 
 	//If user wants to use default values
-	const [isDefault, setIsDefault ] = useState(true);
-	const defaultMilestones = [
-		{ value: 500 },
-		{ value: 1200 },
-		{ value: 2100 },
-		{ value: 4500 },
-	];
+	const [isDefault, setIsDefault] = useState(true);
+	const defaultMilestones = [{ value: 500 }, { value: 1200 }, { value: 2100 }];
 	const handleDefaultMilestones = () => {
-		setIsDefault(!isDefault)
+		setIsDefault(!isDefault);
 		if (isDefault) {
-			setMilestones(defaultMilestones)
+			setMilestones(defaultMilestones);
 		} else {
-			setMilestones([])
+			setMilestones([]);
 		}
-	}
-
-	
+	};
 
 	return (
 		<ChakraProvider>
@@ -74,7 +66,7 @@ function App() {
 						</Button>
 					</HStack>
 					<Button colorScheme={"teal"} onClick={handleDefaultMilestones}>
-						{isDefault ? "Use" : "Remove" } Default Milestones
+						{isDefault ? "Use" : "Remove"} Default Milestones
 					</Button>
 				</Stack>
 			</Container>
